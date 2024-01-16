@@ -50,11 +50,15 @@ pm2 start zapgpt.js
 
 pm2 logs zapgpt 
 
+
 ## Faça a leitura do qrcode  
+
 
 ## Para voltar ao terminal ctrl + c  
 
+
 pm2 list  
+
 
 ## Para deletar a instância: 
 
