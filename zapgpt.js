@@ -34,7 +34,7 @@ const client = new Client({
     //executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
     //===================================================================================
     // CAMINHO DO CHROME PARA LINUX (REMOVER O COMENTÁRIO ABAIXO)
-    // executablePath: '/usr/bin/google-chrome-stable',
+    executablePath: '/usr/bin/google-chrome-stable',
     //===================================================================================
     args: [
       '--no-sandbox', //Necessário para sistemas Linux
@@ -364,7 +364,7 @@ function readMap(numeroId) {
 client.on('message', async msg => {
     
     // msg.body !== null para ativar com qualquer coisa
-    if (!existsDB(msg.from) && msg.body === "Quero saber mais" && msg.from.endsWith('@c.us') && !msg.hasMedia) {
+    if (!existsDB(msg.from) && msg.body === '#oi' && msg.from.endsWith('@c.us') && !msg.hasMedia) {
         addObject(msg.from, 'stepGPT', 'id_temp', 'done', [], null, null, 200);
     }
 
@@ -451,7 +451,7 @@ client.on('message_create', async (msg) => {
 
     //Instruções da Central de Controle
     if (msg.fromMe && msg.body.startsWith('!help') && msg.to === msg.from) {    
-      await client.sendMessage(msg.from, `*Sistema de Controle ZAPGPT v1.0*\n\nFormato do *contato*: xxyyyyyyyyy\n\n*Atendimento Humano*\nMétodo Direto: "Ativar humano"\nMétodo Indireto: "!humano xxyyyyyyyyy"\n\n*Adicionar Lead a Base*\nMétodo Direto: "Olá, tudo bom?"\nMétodo Indireto: "!start xxyyyyyyyyy"`);
+      await client.sendMessage(msg.from, `*Sistema de Controle IPMAIS v1.0*\n\nFormato do *contato*: xxyyyyyyyyy\n\n*Atendimento Encerrado*\nMétodo Direto: "Atendimento encerrado"\n\n*Atendimento Humano*\nMétodo Direto: "Atendimento humano"\nMétodo Indireto: "!humano xxyyyyyyyyy"\n\n*Adicionar Lead a Base*\nMétodo Direto: "Olá, tudo bom?"\nMétodo Indireto: "!start xxyyyyyyyyy"`);
     }
   
     //Deletar um contato da Base de Dados (Atendimento Humano)
@@ -463,12 +463,18 @@ client.on('message_create', async (msg) => {
     }
     
     //Deletar um contato da Base de Dados Método Direto (Atendimento Humano)
-    if (msg.fromMe && msg.body === 'Ativar humano' && msg.to !== msg.from) {
+    if (msg.fromMe && msg.body === 'Atendimento humano' && msg.to !== msg.from) {
       if(existsDB(msg.to)){
         deleteObject(msg.to);}
-        await client.sendMessage(msg.from, `Deletei da Base de Dados o numero: ${msg.to}`);    
+        await client.sendMessage(msg.from, `Atendimento Humano - Deletei da Base de Dados o numero: ${msg.to}`);    
     }
   
+    //Deletar um contato da Base de Dados Método Direto (Atendimento Encerrado)
+    if (msg.fromMe && msg.body === 'Atendimento encerrado' && msg.to !== msg.from) {
+      if(existsDB(msg.to)){
+        deleteObject(msg.to);}
+        await client.sendMessage(msg.from, `Atendimento Encerrado - Deletei da Base de Dados o numero: ${msg.to}`);    
+    }
     //Adicionar um contato na base de dados (Método Indireto)
     if (msg.fromMe && msg.body.startsWith('!start ') && msg.to === msg.from) {
       let contato = formatarContato(msg.body,'!start ');
